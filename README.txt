@@ -1,0 +1,1 @@
+Leaflet app where the coordinates of several locations are reported back on the fly.

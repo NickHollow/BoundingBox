@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html style="height: 100%;>
+<head>
+<title>Add Random Points with Leaflet</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
+<!--[if lte IE 8]><link rel="stylesheet" href="../dist/leaflet.ie.css" /><![endif]-->
+<link href="style/leaflet.css" rel="stylesheet" type="text/css">
+</head>
+<script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.2.1"></script>
+<script src="http://cdn.leafletjs.com/leaflet-0.5/leaflet.js"></script>
+ 
+<body  style="height: 100%;" onload="load_map(); GetMapCoords();" onresize="GetMapCoords();">
+<div class="title_div">
+<p style="font-size:medium; text-align:center;"><b>Extent Tracker</b><br /> using <a href="twitter.com/leafletjs"/>@leaflet</a></p>
+</div>
+ 
+ 
+<div class="Coord_Boxes" style="left:15px; top:2%;">
+<p style="font-size:x-small;"><b>Northwest Corner</b></span>
+<p style="font-size:x-small;">Lat: <span id="northwest_lat" style="font-size:x-small;"></span></p>
+<p style="font-size:x-small;">Lon: <span id="northwest_lon" style="font-size:x-small;"></span></p>
+</div>
+
+<div class="Coord_Boxes" style="right:15px; top:2%;">
+<p style="font-size:x-small;"><b>Northeast Corner</b></span>
+<p style="font-size:x-small;">Lat: <span id="northeast_lat" style="font-size:x-small;"></span></p>
+<p style="font-size:x-small;">Lon: <span id="northeast_lon" style="font-size:x-small;"></span></p>
+</div>
+
+<div class="Coord_Boxes" style="right:50%; top:50%;">
+<p style="font-size:x-small;"><b>Central</b></span>
+<p style="font-size:x-small;" >Lat: <span id="center_lat" style="font-size:x-small;"></span></p>
+<p style="font-size:x-small;" >Lon: <span id="center_lon" style="font-size:x-small;"></span></p>
+</div>
+
+<div class="Coord_Boxes" style="left:15px; top:50%;">
+<p style="font-size:x-small;"><b>West Central</b></span>
+<p style="font-size:x-small;">Lat: <span id="westcenter_lat" style="font-size:x-small;"></span></p>
+<p style="font-size:x-small;">Lon: <span id="westcenter_lon" style="font-size:x-small;"></span></p>
+</div>
+
+<div class="Coord_Boxes" style="right:15px; top:50%;">
+<p style="font-size:x-small;"><b>East Central</b></span>
+<p style="font-size:x-small;">Lat: <span id="eastcenter_lat" style="font-size:x-small;"></span></p>
+<p style="font-size:x-small;">Lon: <span id="eastcenter_lon" style="font-size:x-small;"></span></p>
+</div>
+
+<div class="Coord_Boxes" style="right:15px; bottom:2%;">
+<p style="font-size:x-small;"><b>Southeast Corner</b></span>
+<p style="font-size:x-small;">Lat: <span id="southeast_lat" style="font-size:x-small;"></span></p>
+<p style="font-size:x-small;">Lon: <span id="southeast_lon" style="font-size:x-small;"></span></p>
+</div>
+
+
+<div class="Coord_Boxes" style="left:15px; bottom:2%;">
+<p style="font-size:x-small;"><b>Southwest Corner</b></span>
+<p style="font-size:x-small;">Lat: <span id="southwest_lat" style="font-size:x-small;"></span></p>
+<p style="font-size:x-small;">Lon: <span id="southwest_lon" style="font-size:x-small;"></span></p>
+</div>
+ 
+<div style="font-family:arial; position:absolute; right:45%; bottom:0.75%;background:white; border-radius: 10px; width:300px; padding:5px; z-index:10; box-shadow: 5px 5px 5px #888888;">
+<p style="font-size:x-small; text-align:center;">Built using <a href="http://leafletjs.com/"/>Leaflet</a> - for demo purposes only
+<br />
+For more geo ideas check out <a href="http://www.gisdoctor.com/site/"/>GISDoctor.com</a>
+<br />
+Follow <a href="http://twitter.com/GISdoctor"/>@GISDoctor on Twitter</a>
+</p>
+
+</div>
+ 
+<div id="map"  onclick="GetMapCoords();" onkeyup="GetMapCoords();" onmousewheel="GetMapCoords();" style="width: 100%; height: 99%;"> </div>
+ 
+<script>
+    //script based onhttp://stackoverflow.com/questions/9912145/leaflet-how-to-find-existing-markers-and-delete-markers
+   	var map = L.map('map',{ zoomControl:false}).setView([40, -95], 4);
+	
+	function load_map()
+    {
+        mapLayer = L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
+        maxZoom: 18, attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
+        }).addTo(map);
+		
+    } 
+    	
+	function GetMapCoords() 
+	{
+		
+		var north_lat = map.getBounds().getNorthEast().lat;
+		var south_lat = map.getBounds().getSouthWest().lat;
+		var east_lon= map.getBounds().getNorthEast().wrap().lng;
+		var west_lon= map.getBounds().getSouthWest().wrap().lng;
+		var center_lat = map.getBounds().getCenter().lat;
+		var center_lon = map.getBounds().getCenter().wrap().lng;
+	
+		var ne_lat = document.getElementById("northeast_lat")
+		var ne_lon = document.getElementById("northeast_lon")
+		
+		var nw_lat = document.getElementById("northwest_lat")
+		var nw_lon = document.getElementById("northwest_lon")
+		
+		var se_lat = document.getElementById("southeast_lat")
+		var se_lon = document.getElementById("southeast_lon")
+		
+		var sw_lat = document.getElementById("southwest_lat")
+		var sw_lon = document.getElementById("southwest_lon")
+		
+		var c_lat = document.getElementById("center_lat")
+		var c_lon = document.getElementById("center_lon")
+		
+		var ce_lat = document.getElementById("eastcenter_lat")
+		var ce_lon = document.getElementById("eastcenter_lon")
+		
+		var cw_lat = document.getElementById("westcenter_lat")
+		var cw_lon = document.getElementById("westcenter_lon")
+		
+		ne_lat.innerHTML = north_lat;
+		ne_lon.innerHTML = east_lon;
+		
+		nw_lat.innerHTML = north_lat;
+		nw_lon.innerHTML = west_lon;
+		
+		se_lat.innerHTML = south_lat; 
+		se_lon.innerHTML = east_lon;
+		
+		sw_lat.innerHTML = south_lat;
+		sw_lon.innerHTML = west_lon;
+		
+		c_lat.innerHTML = center_lat;
+		c_lon.innerHTML = center_lon;
+		
+		ce_lat.innerHTML = center_lat;
+		ce_lon.innerHTML = east_lon;
+		
+		cw_lat.innerHTML = center_lat;
+		cw_lon.innerHTML = west_lon;
+		
+	}
+
+</script>
+<!--Do not copy and paste the next two blocks of code into your page-->
+<script type="text/javascript"> 
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script> 
+<script type="text/javascript"> 
+    var pageTracker = _gat._getTracker("UA-10269571-1");
+    pageTracker._initData();
+    pageTracker._trackPageview();
+</script> 
+</body>
+</html>
