@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html style="height: 100%;>
 <head>
-<title>Add Random Points with Leaflet</title>
+<title>Bounding Box Coordinates with Leaflet</title>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5/leaflet.css" />
@@ -16,7 +16,7 @@
 <p style="font-size:medium; text-align:center;"><b>Extent Tracker</b><br /> using <a href="twitter.com/leafletjs"/>@leaflet</a></p>
 </div>
  
- 
+ <!-- Set a series of HTML divs to display the coordinates -->
 <div class="Coord_Boxes" style="left:15px; top:2%;">
 <p style="font-size:x-small;"><b>Northwest Corner</b></span>
 <p style="font-size:x-small;">Lat: <span id="northwest_lat" style="font-size:x-small;"></span></p>
@@ -73,11 +73,12 @@ Follow <a href="http://twitter.com/GISdoctor"/>@GISDoctor on Twitter</a>
 <div id="map"  onclick="GetMapCoords();" onkeyup="GetMapCoords();" onmousewheel="GetMapCoords();" style="width: 100%; height: 99%;"> </div>
  
 <script>
-    //script based onhttp://stackoverflow.com/questions/9912145/leaflet-how-to-find-existing-markers-and-delete-markers
+    	//script based on http://stackoverflow.com/questions/9912145/leaflet-how-to-find-existing-markers-and-delete-markers
    	var map = L.map('map',{ zoomControl:false}).setView([40, -95], 4);
 	
 	function load_map()
     {
+    	//Set the map - this example uses a OSM layer
         mapLayer = L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
         maxZoom: 18, attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
         }).addTo(map);
@@ -86,7 +87,7 @@ Follow <a href="http://twitter.com/GISdoctor"/>@GISDoctor on Twitter</a>
     	
 	function GetMapCoords() 
 	{
-		
+		//Set the coordinates that will be reported
 		var north_lat = map.getBounds().getNorthEast().lat;
 		var south_lat = map.getBounds().getSouthWest().lat;
 		var east_lon= map.getBounds().getNorthEast().wrap().lng;
@@ -94,6 +95,7 @@ Follow <a href="http://twitter.com/GISdoctor"/>@GISDoctor on Twitter</a>
 		var center_lat = map.getBounds().getCenter().lat;
 		var center_lon = map.getBounds().getCenter().wrap().lng;
 	
+		//assign the different coordiantes to different html elements so that they display on screen	
 		var ne_lat = document.getElementById("northeast_lat")
 		var ne_lon = document.getElementById("northeast_lon")
 		
